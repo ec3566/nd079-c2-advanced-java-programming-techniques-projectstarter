@@ -33,7 +33,6 @@ public final class ConfigurationLoader {
 	 */
 	@JsonDeserialize ( builder = CrawlerConfiguration.Builder.class )
 	public CrawlerConfiguration load ( ) {
-      System.out.println ( "Method load ( ) start..." );
       try {
         Reader reader = Files.newBufferedReader ( path, StandardCharsets.UTF_8 );
         this.read ( reader );

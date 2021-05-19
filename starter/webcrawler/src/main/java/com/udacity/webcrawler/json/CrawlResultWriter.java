@@ -35,12 +35,15 @@ public final class CrawlResultWriter {
 		// This is here to get rid of the unused variable warning.
 		Objects.requireNonNull ( path );
 		ObjectMapper objMapper = new ObjectMapper ( );
-		File file = new File ( String.valueOf ( path ) );
-		try {
-			objMapper.writeValue ( file, result );
-		} catch ( IOException e ) {
-			e.printStackTrace ( );
-		}
+		System.out.println ( "about to happen" );
+//		File file = new File ( String.valueOf ( path ) );
+//		try {
+//			objMapper.writeValue ( file, result );
+//		} catch ( IOException e ) {
+//			e.printStackTrace ( );
+//		}
+		objMapper.writeValue ( new File ( String.valueOf ( path ) ), result );
+		System.out.println ( "done" );
 
 	}
 
