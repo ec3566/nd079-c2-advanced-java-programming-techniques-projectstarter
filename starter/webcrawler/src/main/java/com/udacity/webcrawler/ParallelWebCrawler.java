@@ -25,9 +25,6 @@ final class ParallelWebCrawler implements WebCrawler {
 	private final PageParserFactory pageParserFactory;
 	private final List < Pattern > ignoredUrls;
 	private final int maxDepth;
-	private final Map < String, Integer > counts;
-	private final Instant finish;
-	private final Set < String > visited;
 
 	@Inject
 	ParallelWebCrawler (
@@ -36,11 +33,8 @@ final class ParallelWebCrawler implements WebCrawler {
 			@PopularWordCount int popularWordCount,
 			@TargetParallelism int threadCount,
 			PageParserFactory pageParserFactory,
-			List < Pattern > ignoredUrls,
-			int maxDepth,
-			Map < String, Integer > counts,
-			Instant finish,
-			Set < String > visited ) {
+			@IgnoredUrls List < Pattern > ignoredUrls,
+			@MaxDepth int maxDepth ) {
 		this.clock = clock;
 		this.timeout = timeout;
 		this.popularWordCount = popularWordCount;
@@ -48,15 +42,13 @@ final class ParallelWebCrawler implements WebCrawler {
 		this.pageParserFactory = pageParserFactory;
 		this.ignoredUrls = ignoredUrls;
 		this.maxDepth = maxDepth;
-		this.counts = counts;
-		this.finish = finish;
-		this.visited = visited;
 	}
 
 
 	@Override
 	public CrawlResult crawl ( List < String > startingUrls ) {
-		ConcurrentMap < String, Integer > count = new ConcurrentHashMap < > ( );
+		Instant finish = clock.instant ( ).plus ( timeout );
+		ConcurrentMap < String, Integer > counts = new ConcurrentHashMap < > ( );
 		ConcurrentSkipListSet visited = new ConcurrentSkipListSet (  );
 		for ( String url : startingUrls ) {
 			pool.invoke ( new customTaskClassCrawler ( clock, pageParserFactory,
@@ -64,7 +56,6 @@ final class ParallelWebCrawler implements WebCrawler {
 					maxDepth, ignoredUrls,
 					url, counts,
 					finish, visited ) );
-			//bit messy, constructors dont match up to custom class, maybe clean it up later, needlessly confusing
 		}
 		if ( counts.isEmpty ( ) ) {
 			return new CrawlResult.Builder ( )
