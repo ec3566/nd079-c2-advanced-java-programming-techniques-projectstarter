@@ -11,6 +11,8 @@ Q1. Run the web crawler using the configurations located at src/main/config/writ
 
     Why did the parser take more time when run with ParallelWebCrawler?
 
+    Profiler adds up the time taken by all threads to parse.
+
 
 Q2. Your manager ran your crawler on her old personal computer, using the configurations from Q1, and she notices that
     the sequential crawler actually outperforms the parallel crawler. She would like to know why.
@@ -18,15 +20,23 @@ Q2. Your manager ran your crawler on her old personal computer, using the config
     (a) Suggest one reason why the sequential web crawler was able to read more web pages than the parallel crawler.
         (Hint: Try setting "parallelism" to 1 in the JSON configs to simulate your manager's computer.)
 
+        The older computer may be a single core computer without even hyperthreading or smt. Thus, having parallel threads is useless when the processor doesn't have more than one thread available
+
     (b) Suggest one scenario in which the parallel web crawler will almost certainly perform better than the sequential
         crawler. Why will it perform better?
+
+        Any remotely modern computer will have multiple cores and/or ht/smt which can effectively make use of parallelism
 
 
 Q3. Analyze your method profiler through the lens of Aspect Oriented Programming, by answering the following questions:
 
     (a) What cross-cutting concern is being addressed by the com.udacity.webcrawler.profiler.Profiler class?
 
+
+
     (b) What are the join points of the Profiler in the web crawler program?
+
+    methods annoatated by @profiled
 
 
 Q4. Identify three (3) different design patterns used in this project, and explain which interfaces, classes, and/or
@@ -35,4 +45,11 @@ Q4. Identify three (3) different design patterns used in this project, and expla
     For each pattern, name one thing about the pattern that you LIKED, and one thing you DISLIKED. If you did not like
     anything, you can name two things you disliked.
 
+    - builder: Crawlerconfiguration, crawlresult, parsermodule, countwordstask
+        makes creating instances easier, just takes a little bit longer to type it all out, makes my eyes hurt sometimes
 
+    - dependency injection: webcrawlermain, profilers classes, sequential and parallel webcrawler
+        makes tests a lot easier, but a lot more files/classes are needed, and it can get confusing quick
+
+    - abstract factory: pageparser factory
+        dont have to remember the same parameter and manally type it out every time, makes a lot of small classes, which when paired with DI made it a bit of a headache, contsnatly opening and closing otehr files.
