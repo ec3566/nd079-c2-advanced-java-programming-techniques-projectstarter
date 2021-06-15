@@ -49,7 +49,7 @@ final class ParallelWebCrawler implements WebCrawler {
 	public CrawlResult crawl ( List < String > startingUrls ) {
 		Instant finish = clock.instant ( ).plus ( timeout );
 		ConcurrentMap < String, Integer > counts = new ConcurrentHashMap < > ( );
-		ConcurrentSkipListSet visited = new ConcurrentSkipListSet (  );
+		ConcurrentSkipListSet visited = new ConcurrentSkipListSet <>(  );
 		for ( String url : startingUrls ) {
 			pool.invoke ( new customTaskClassCrawler ( clock, pageParserFactory,
 					timeout, popularWordCount,

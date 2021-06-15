@@ -16,7 +16,7 @@ import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.RecursiveTask;
 import java.util.regex.Pattern;
 
-public class customTaskClassCrawler extends RecursiveTask {
+public class customTaskClassCrawler extends RecursiveTask <Boolean> {
 //need recursiveTask instead of action to return boolean, not sure how to make recursiveAction return boolean
 	private final Clock clock;
 	private final PageParserFactory pageParserFactory;
@@ -71,7 +71,7 @@ public class customTaskClassCrawler extends RecursiveTask {
 			subTasks.add ( new customTaskClassCrawler (
 					clock, pageParserFactory,
 					timeout, popularWordCount,
-					maxDepth, ignoredUrls,
+					maxDepth - 1, ignoredUrls,
 					link, counts,
 					finish, visited
 			));

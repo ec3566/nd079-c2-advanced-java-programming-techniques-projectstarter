@@ -38,7 +38,7 @@ public final class WebCrawlerMain {
 		CrawlResult result = crawler.crawl ( config.getStartPages ( ) );
 		CrawlResultWriter resultWriter = new CrawlResultWriter ( result );
 		String resultPath = config.getResultPath ( );
-		if ( resultPath.isEmpty ( ) ) {
+		if ( !resultPath.isEmpty ( ) ) {
 			resultWriter.write ( Path.of ( this.config.getResultPath ( ) ) );
 		} else {
 			Writer writer = new BufferedWriter ( new OutputStreamWriter ( System.out ) );
