@@ -33,10 +33,10 @@ public final class ConfigurationLoader {
 	 */
 	@JsonDeserialize ( builder = CrawlerConfiguration.Builder.class )
 	public CrawlerConfiguration load ( ) {
-      try {
-        Reader reader = Files.newBufferedReader ( path, StandardCharsets.UTF_8 );
-        this.read ( reader );
-        reader.close ( );
+      try ( Reader reader = Files.newBufferedReader ( path, StandardCharsets.UTF_8 )) {
+//        Reader reader = Files.newBufferedReader ( path, StandardCharsets.UTF_8 );
+        return this.read ( reader );
+//        reader.close ( );
       } catch ( IOException e ) {
         e.printStackTrace ( );
       }

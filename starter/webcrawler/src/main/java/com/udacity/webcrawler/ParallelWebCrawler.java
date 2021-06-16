@@ -8,8 +8,6 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.*;
 import java.util.regex.Pattern;
 
@@ -51,11 +49,11 @@ final class ParallelWebCrawler implements WebCrawler {
 		ConcurrentMap < String, Integer > counts = new ConcurrentHashMap < > ( );
 		ConcurrentSkipListSet visited = new ConcurrentSkipListSet <>(  );
 		for ( String url : startingUrls ) {
-			pool.invoke ( new customTaskClassCrawler ( clock, pageParserFactory,
+			pool.invoke ( new CustomTaskClassCrawler ( clock, pageParserFactory,
 					timeout, popularWordCount,
 					maxDepth, ignoredUrls,
-					url, counts,
-					finish, visited ) );
+					finish, visited,
+					url, counts) );
 		}
 		if ( counts.isEmpty ( ) ) {
 			return new CrawlResult.Builder ( )
